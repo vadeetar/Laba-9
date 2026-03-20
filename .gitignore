@@ -26,4 +26,4 @@ go.sum
 
 # OS
 .DS_Store
-Thumbs.db
+Thumbs.db.vs/
