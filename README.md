@@ -12,18 +12,6 @@
 - **Rust** — высокопроизводительная библиотека (AES-128 шифрование + обработка изображений)
 - **Python** — оркестратор на FastAPI
 
-## Структура проекта
-├── docker/
-├── go_calculator/
-├── go_service/
-├── python_app/
-├── rust_lib/
-├── tests/
-├── .gitignore
-├── PROMPT_LOG.md
-├── docker-compose.yml
-├── requirements.txt
-
 ## Запуск тестов
 ```bash
 # Python тесты
