@@ -2,8 +2,7 @@ package main
 
 import (
 	"encoding/json"
-	"log"
-	"net/http"
+	"os"
 )
 
 type Input struct {
@@ -11,28 +10,22 @@ type Input struct {
 }
 
 type Output struct {
-	Result int `json:"result"`
-}
-
-func calculateLogic(numbers []int) int {
-	sum := 0
-	for _, n := range numbers {
-		sum += n * n
-	}
-	return sum
-}
-
-func calculate(w http.ResponseWriter, r *http.Request) {
-	var input Input
-	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		http.Error(w, "invalid JSON", http.StatusBadRequest)
-		return
-	}
-	result := calculateLogic(input.Numbers)
-	json.NewEncoder(w).Encode(Output{Result: result})
+	Sum int `json:"sum"`
 }
 
 func main() {
-	http.HandleFunc("/calculate", calculate)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	var input Input
+	if err := json.NewDecoder(os.Stdin).Decode(&input); err != nil {
+		os.Exit(1)
+	}
+
+	sum := 0
+	for _, n := range input.Numbers {
+		sum += n * n
+	}
+
+	output := Output{Sum: sum}
+	if err := json.NewEncoder(os.Stdout).Encode(output); err != nil {
+		os.Exit(1)
+	}
 }

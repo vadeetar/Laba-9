@@ -1,4 +1,3 @@
-cat > python_app/app.py << 'EOF'
 import requests
 import os
 import time
@@ -9,7 +8,6 @@ import fastlib
 GO_URL = os.getenv("GO_URL", "http://localhost:8080")
 
 def call_go_http(numbers, retries=3):
-    """Вызов Go HTTP сервиса"""
     for _ in range(retries):
         try:
             r = requests.post(f"{GO_URL}/calculate", json={"numbers": numbers}, timeout=2)
@@ -19,11 +17,6 @@ def call_go_http(numbers, retries=3):
     raise Exception("Go HTTP service unavailable")
 
 def call_go_subprocess(numbers):
-    """Вызов Go калькулятора через subprocess (исходный код, нужно скомпилировать)"""
-    # Сначала компилируем (если бинарника нет)
-    if not os.path.exists("./go_calculator/calculator.exe"):
-        subprocess.run(["go", "build", "-o", "./go_calculator/calculator.exe", "./go_calculator/main.go"])
-    
     proc = subprocess.Popen(
         ["./go_calculator/calculator.exe"],
         stdin=subprocess.PIPE,
@@ -38,7 +31,6 @@ def call_go_subprocess(numbers):
     return output["sum"]
 
 def encrypt():
-    """Вызов Rust AES шифрования"""
     return fastlib.aes_encrypt([1] * 16, [2] * 16)
 
 def main():
@@ -52,7 +44,6 @@ def main():
         print(f"Subprocess result: {result_sub}")
     except Exception as e:
         print(f"Subprocess error: {e}")
-        print("(Make sure Go is installed to compile the binary)")
 
     print("\n=== Rust AES Encryption ===")
     encrypted = encrypt()
@@ -60,4 +51,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-EOF
